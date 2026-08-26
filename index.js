@@ -1096,6 +1096,7 @@ function readEnv(ctx) {
   };
 }
 async function ensureTurso(ctx) {
+  if (!ctx.env.tursoToken || !ctx.env.tursoUrl) return;
   for (const sql of SCHEMA) {
     await batch([{ sql }]);
   }
@@ -1104,6 +1105,19 @@ async function route(request, path, url, ctx) {
   const m = path.split("?")[0];
   if (m === "/api/health" || m === "/health") {
     return ok({ ok: true, service: "community-edge", time: (/* @__PURE__ */ new Date()).toISOString() });
+  }
+  if (m === "/api/debug/env") {
+    return ok({
+      turso: !!ctx.env.tursoUrl && !!ctx.env.tursoToken,
+      qiniu: !!ctx.env.qiniuAk && !!ctx.env.qiniuSk,
+      resend: !!ctx.env.resendKey,
+      mailFrom: ctx.env.mailFrom,
+      mockEmail: ctx.env.mockEmail,
+      jwtSecret: !!ctx.env.jwtSecret,
+      tursoUrl: ctx.env.tursoUrl ? String(ctx.env.tursoUrl).slice(0, 40) + "\u2026" : "(empty)",
+      tokenLen: String(ctx.env.tursoToken || "").length,
+      envKeys: Object.keys(ctx.env || {})
+    });
   }
   if (m === "/api/auth/send-code" && request.method === "POST") return handleSendCode(request, ctx);
   if (m === "/api/auth/register" && request.method === "POST") return handleRegister(request, ctx);
