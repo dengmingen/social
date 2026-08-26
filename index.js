@@ -1110,6 +1110,10 @@ async function route(request, path, url, ctx) {
     return ok({ ok: true, service: "community-edge", time: (/* @__PURE__ */ new Date()).toISOString() });
   }
   if (m === "/api/debug/env") {
+    const raw = ctx.rawEnv || {};
+    const realEnvKeys = Object.keys(raw);
+    const realEnvStatus = {};
+    for (const k of realEnvKeys) realEnvStatus[k] = !!raw[k];
     return ok({
       turso: !!ctx.env.tursoUrl && !!ctx.env.tursoToken,
       qiniu: !!ctx.env.qiniuAk && !!ctx.env.qiniuSk,
@@ -1119,7 +1123,10 @@ async function route(request, path, url, ctx) {
       jwtSecret: !!ctx.env.jwtSecret,
       tursoUrl: ctx.env.tursoUrl ? String(ctx.env.tursoUrl).slice(0, 40) + "\u2026" : "(empty)",
       tokenLen: String(ctx.env.tursoToken || "").length,
-      envKeys: Object.keys(ctx.env || {})
+      envKeys: Object.keys(ctx.env || {}),
+      // 真实注入的变量（ESA 控制台实际传入的键与是否有值），仅脱敏展示键名
+      realEnvKeys,
+      realEnvStatus
     });
   }
   if (m === "/api/auth/send-code" && request.method === "POST") return handleSendCode(request, ctx);
@@ -1171,8 +1178,9 @@ async function route(request, path, url, ctx) {
 }
 var edge_default = {
   async fetch(request, context) {
-    const e = readEnv(context);
-    const ctx = { env: e, mockEmail: e.mockEmail, jwtSecret: e.jwtSecret };
+    const rawEnv = context && context.env ? context.env : {};
+    const e = readEnv({ env: rawEnv });
+    const ctx = { env: e, rawEnv, mockEmail: e.mockEmail, jwtSecret: e.jwtSecret };
     const url = new URL(request.url);
     if (request.method === "OPTIONS") return handleOptions();
     try {
