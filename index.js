@@ -1,4 +1,4 @@
-// edge/src/lib/turso.js
+// src/lib/turso.js
 var _dbUrl = null;
 var _token = null;
 function initTurso({ url, token }) {
@@ -90,7 +90,7 @@ async function batch(sqlStmts) {
   return pipeline(requests);
 }
 
-// edge/src/lib/resend.js
+// src/lib/resend.js
 var _apiKey = null;
 var _from = "noreply@vasc.beer";
 function initResend({ apiKey, from }) {
@@ -137,7 +137,7 @@ function buildCodeEmail({ to, code, action = "register" }) {
   return { to, subject, text, html };
 }
 
-// edge/src/lib/qiniu.js
+// src/lib/qiniu.js
 var _q = null;
 function initQiniu({ accessKey, secretKey, bucket, region }) {
   _q = { accessKey, secretKey, bucket, region };
@@ -172,7 +172,7 @@ function uploadHost() {
   return `up-${code}.qiniup.com`;
 }
 
-// edge/src/lib/schema.js
+// src/lib/schema.js
 var SCHEMA = [
   // 用户
   `CREATE TABLE IF NOT EXISTS users (
@@ -200,17 +200,24 @@ var SCHEMA = [
   `CREATE INDEX IF NOT EXISTS idx_email_codes_email ON email_codes(email, sent_at)`
 ];
 
-// edge/src/lib/resp.js
+// src/lib/resp.js
+var CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  // 非简单请求（如带 Authorization 头）先发 OPTIONS 预检；结果可缓存 10 分钟
+  "Access-Control-Max-Age": "600"
+};
 function ok(data) {
   return new Response(JSON.stringify({ code: 0, data }), {
     status: 200,
-    headers: { "Content-Type": "application/json; charset=utf-8" }
+    headers: { "Content-Type": "application/json; charset=utf-8", ...CORS_HEADERS }
   });
 }
 function fail(msg, status = 200) {
   return new Response(JSON.stringify({ code: 1, msg }), {
     status,
-    headers: { "Content-Type": "application/json; charset=utf-8" }
+    headers: { "Content-Type": "application/json; charset=utf-8", ...CORS_HEADERS }
   });
 }
 async function readJson(request) {
@@ -221,14 +228,10 @@ async function readJson(request) {
   }
 }
 function handleOptions() {
-  return new Response(null, { status: 204, headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization"
-  } });
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
 
-// edge/src/lib/crypto.js
+// src/lib/crypto.js
 var enc2 = new TextEncoder();
 function bufToHex(buf) {
   return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -269,7 +272,7 @@ async function hashPasswordWithSalt(password, saltHex) {
   return { hash };
 }
 
-// edge/src/lib/jwt.js
+// src/lib/jwt.js
 var enc3 = new TextEncoder();
 function b64url2(buf) {
   const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
@@ -300,7 +303,7 @@ function b64urlToJson(obj) {
   return b64url2(enc3.encode(JSON.stringify(obj)));
 }
 
-// edge/src/api/auth.js
+// src/api/auth.js
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 var CODE_TTL_MS = 10 * 60 * 1e3;
 var SEND_INTERVAL_MS = 60 * 1e3;
@@ -383,7 +386,7 @@ async function login(req, ctx) {
   return ok({ token, userId: user.id, username: user.username, email: user.email });
 }
 
-// edge/src/lib/palette.js
+// src/lib/palette.js
 var bannerBg = [
   "linear-gradient(135deg,#2b2d50 0%,#14161f 100%)",
   "linear-gradient(135deg,#1f4e5f 0%,#0d3b2b 100%)",
@@ -404,7 +407,7 @@ var feedGradients = [
   "linear-gradient(135deg, #dcf0ff 0%, #7fc4f8 100%)"
 ];
 
-// edge/src/lib/data.js
+// src/lib/data.js
 var NOW = Date.now();
 var ago = (hours) => new Date(NOW - hours * 36e5).toISOString();
 var grad = (i) => feedGradients[Math.abs(i) % feedGradients.length];
@@ -566,7 +569,7 @@ var followFeeds = seeds.map((s, i) => {
 var getFollowFeeds = (userId) => userId ? followFeeds.filter((f) => f.userId === userId) : followFeeds;
 var getAuthorById = (id) => authorById[id] || null;
 
-// edge/src/api/home.js
+// src/api/home.js
 function getBanners() {
   return ok(banners);
 }
@@ -608,7 +611,7 @@ function announceTabsApi() {
   return ok(announceTabs);
 }
 
-// edge/src/lib/content.js
+// src/lib/content.js
 var NOW2 = Date.now();
 var ago2 = (n) => new Date(NOW2 - n * 36e5).toISOString();
 var grad2 = (i) => feedGradients[Math.abs(i) % feedGradients.length];
@@ -890,7 +893,7 @@ var splashInfo = {
 };
 var appExitInfo = { ok: true, time: (/* @__PURE__ */ new Date()).toISOString() };
 
-// edge/src/api/search.js
+// src/api/search.js
 function getTypes() {
   return ok(searchTypes);
 }
@@ -918,7 +921,7 @@ function doSearch(url) {
   return ok({ type, keyword, list, page, hasMore: false });
 }
 
-// edge/src/api/article.js
+// src/api/article.js
 function getDetail(url) {
   const id = url.searchParams.get("id") || articleDetail.id;
   return ok({ ...articleDetail, id: id || articleDetail.id });
@@ -971,7 +974,7 @@ function getMoreActions() {
   return ok(moreActions);
 }
 
-// edge/src/api/follow.js
+// src/api/follow.js
 function getAuthors() {
   return ok(followAuthors);
 }
@@ -987,7 +990,7 @@ async function toggleFollow(request) {
   return ok({ userId: uid, followed: author ? author.followed : false });
 }
 
-// edge/src/api/message.js
+// src/api/message.js
 function getTypes2() {
   return ok(messageTypes);
 }
@@ -1008,7 +1011,7 @@ async function deleteMsg(request) {
   return ok({ id: body.id });
 }
 
-// edge/src/api/publish.js
+// src/api/publish.js
 function getTypes3() {
   return ok(publishTypes);
 }
@@ -1053,7 +1056,7 @@ async function uploadImage(req) {
   });
 }
 
-// edge/src/api/profile.js
+// src/api/profile.js
 function profileInfo() {
   return ok(getProfile());
 }
@@ -1078,7 +1081,7 @@ function exitApp() {
   return ok(appExitInfo);
 }
 
-// edge/index.js
+// index.js
 var env = (ctx, k, dflt) => ctx && ctx.env && ctx.env[k] || globalThis.__env && globalThis.__env[k] || typeof process !== "undefined" && process.env && process.env[k] || dflt;
 function readEnv(ctx) {
   return {
