@@ -1,0 +1,1 @@
+import{r as t}from"./index-BH2hkO_v.js";function r(){return t({url:"/api/follow/authors"})}function e(o){return t({url:"/api/follow/feeds",data:{userId:o}})}function a(o){return t({url:"/api/follow/toggle",data:{userId:o}})}export{e as a,r as g,a as t};

@@ -1,0 +1,1 @@
+import{r}from"./index-BH2hkO_v.js";function a(t){return r({url:"/api/auth/send-code",method:"POST",data:t})}function n(t){return r({url:"/api/auth/login",method:"POST",data:t})}function o(t){return r({url:"/api/auth/register",method:"POST",data:t})}export{n as l,o as r,a as s};
