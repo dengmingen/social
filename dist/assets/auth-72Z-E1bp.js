@@ -1,0 +1,1 @@
+import{r as a}from"./index-Cbj3FxDr.js";function r(e){return a({url:"/api/auth/send-code",method:"POST",cache:!1,data:e})}function n(e){return a({url:"/api/auth/login",method:"POST",cache:!1,data:e})}function o(e){return a({url:"/api/auth/register",method:"POST",cache:!1,data:e})}export{n as l,o as r,r as s};
