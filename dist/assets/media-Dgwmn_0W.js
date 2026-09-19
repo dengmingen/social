@@ -1,0 +1,1 @@
+function r(i,e=480){const t=String(i??"");if(!t||t.includes("?")||t.includes("imageView2")||t.includes("imageMogr2")||t.startsWith("data:")||!/(^|\/)_(img|file)\//i.test(t))return t;const n=Number(e)||480;return`${t}?imageView2/2/w/${n}/format/webp/q/80`}export{r as t};
