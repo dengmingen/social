@@ -45,5 +45,8 @@ Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 
-# 站点地图（如启用请替换为实际地址）
-# Sitemap: https://www.vasc.beer/sitemap.xml
+# 站点地图（边缘函数动态生成，见 docs/SEO.md）
+Sitemap: https://www.vasc.beer/sitemap.xml
+
+# 百度快速收录：声明主域
+Host: www.vasc.beer

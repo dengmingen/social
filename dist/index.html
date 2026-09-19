@@ -14,13 +14,49 @@
     <link rel="preconnect" href="https://www.vasc.beer" />
     <!-- CSP：仅生产构建注入（default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests），frame-ancestors/XFO/HSTS 需在 OSS/ESA 主机层设置方能强制 -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
-    <title>社区</title>
-    <script type="module" crossorigin src="/assets/index-DBsTUMKI.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vue-DtXc5xwF.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-C8Y5_ggJ.css">
+    <!--SEO:HEAD--><title>Vasc 社区 - 连接每一个热爱分享的你</title>
+    <meta
+      name="description"
+      content="Vasc 社区（vasc.beer）是一个兴趣分享交流社区：发布帖子与文章、关注喜欢的作者、参与话题榜讨论，连接每一个热爱分享的你。"
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://www.vasc.beer/" />
+    <meta property="og:title" content="Vasc 社区 - 连接每一个热爱分享的你" />
+    <meta
+      property="og:description"
+      content="发布帖子与文章、关注作者、参与话题讨论的兴趣分享社区。"
+    />
+    <meta property="og:url" content="https://www.vasc.beer/" />
+    <meta name="twitter:title" content="Vasc 社区 - 连接每一个热爱分享的你" />
+    <meta name="twitter:description" content="发布帖子与文章、关注作者、参与话题讨论的兴趣分享社区。"/><!--SEO:HEAD-END-->
+    <!-- Open Graph：社交/IM 分享卡片 -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vasc 社区" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="keywords" content="Vasc,Vasc社区,社区,兴趣社区,3D社区,文章,话题榜,分享交流" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <!-- 搜索引擎结构化数据（application/ld+json 属数据脚本，不受 CSP script-src 限制） -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Vasc 社区",
+        "alternateName": "vasc.beer",
+        "url": "https://www.vasc.beer/",
+        "inLanguage": "zh-CN"
+      }
+    </script>
+    <!--SEO:HEAD-->
+    <script type="module" crossorigin src="/assets/index-EncUKB99.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vue-Y771Yobp.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-DcCCZQdW.css">
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app"><!--SEO:BODY--></div>
     <!-- 蜜罐链接：视觉隐藏且不可聚焦，正常用户永远不会点击；命中即被边缘端记录 -->
     <a
       href="/api/honey"
