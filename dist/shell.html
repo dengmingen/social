@@ -12,8 +12,8 @@
     <!-- P1: 跨域预连接，降低首屏 API / 静态资源的 DNS+TLS 开销 -->
     <link rel="preconnect" href="https://api.vasc.beer" crossorigin>
     <link rel="preconnect" href="https://www.vasc.beer" />
-    <!-- CSP：仅生产构建注入（default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests），frame-ancestors/XFO/HSTS 需在 OSS/ESA 主机层设置方能强制 -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
+    <!-- CSP：仅生产构建注入（default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer https://up-z2.qiniup.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests），frame-ancestors/XFO/HSTS 需在 OSS/ESA 主机层设置方能强制 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.vasc.beer https://up-z2.qiniup.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />
     <!--SEO:HEAD--><title>Vasc 社区 - 连接每一个热爱分享的你</title>
     <meta
       name="description"
@@ -51,9 +51,9 @@
       }
     </script>
     <!--SEO:HEAD-->
-    <script type="module" crossorigin src="/assets/index-EncUKB99.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/vue-Y771Yobp.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-DcCCZQdW.css">
+    <script type="module" crossorigin src="/assets/index-D1635PGb.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/vue-CcqIbNeg.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-B5li4fMP.css">
   </head>
   <body>
     <div id="app"><!--SEO:BODY--></div>
