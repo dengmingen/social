@@ -33,7 +33,12 @@ export default {
     try {
       up = await fetch(API_ORIGIN + p + url.search, {
         method: request.method,
-        headers: { 'User-Agent': request.headers.get('user-agent') || '' },
+        // X-Forwarded-Host：api 函数的 API 域 404 闸门靠它区分「Pages 转发的页面请求」
+        // 与「直接打 api 域的杂散路径」，前者放行给 SEO 渲染，后者维持 404（勿删）
+        headers: {
+          'User-Agent': request.headers.get('user-agent') || '',
+          'X-Forwarded-Host': url.hostname
+        },
         redirect: 'manual'
       })
     } catch (e) {
