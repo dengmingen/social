@@ -1,0 +1,1 @@
+import{r as e}from"./index-BNiPnDrJ.js";function c(){return e({url:"/api/circle/list"})}function a(r,t=0){return e({url:"/api/circle/feed",data:{id:r,cursor:t}})}function l(r){return e({url:"/api/circle/toggle",method:"POST",cache:!1,data:{id:r}})}function n(){return e({url:"/api/circle/mine"})}export{c as a,a as b,n as g,l as t};
