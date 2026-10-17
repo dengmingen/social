@@ -1,0 +1,1 @@
+import{r as t}from"./index-BNiPnDrJ.js";function a(o=""){return t({url:"/api/follow/authors",data:o?{keyword:o}:{}})}function r(o){return t({url:"/api/follow/feeds",data:{userId:o}})}function e(o){return t({url:"/api/follow/toggle",data:{userId:o}})}export{r as a,a as g,e as t};
