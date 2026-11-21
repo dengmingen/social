@@ -6,7 +6,7 @@
  *  - 静态壳 '/' 预缓存
  * 版本号变更即整池作废（老缓存全清）
  */
-const VERSION = 'v1'
+const VERSION = 'v3'
 const SHELL_CACHE = `vasc-shell-${VERSION}`
 const ASSET_CACHE = `vasc-assets-${VERSION}`
 const IMG_CACHE = `vasc-img-${VERSION}`
@@ -43,6 +43,9 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return
   // API 与资源代理一律直连（不做任何缓存干预）
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/_img/') || url.pathname.startsWith('/_file/')) return
+  // M-fix：跳过开发态资源（vite dev 的模块/HMR 请求绝不能被 SW 拦截，否则整站 ERR_FAILED）
+  if (url.pathname.startsWith('/src/') || url.pathname.startsWith('/@vite/') || url.pathname.startsWith('/@id/') ||
+      url.pathname.startsWith('/node_modules/') || url.search.includes('t=')) return
 
   // 页面导航：网络优先，失败回退 SPA 壳
   if (req.mode === 'navigate') {
@@ -66,6 +69,9 @@ self.addEventListener('fetch', (event) => {
         caches.open(ASSET_CACHE).then((c) => c.put(req, copy)).catch(() => {})
         return res
       }))
+        // M-fix：网络失败兜底为 504 —— 不再让 respondWith 整体 reject
+        // （net::ERR_FAILED + 无穷未捕获异常刷屏的根因）；负响应不写缓存，恢复后自动取新
+        .catch(() => new Response(null, { status: 504, statusText: 'SW Network Timeout' }))
     )
     return
   }
@@ -78,5 +84,43 @@ self.addEventListener('fetch', (event) => {
       }
       return res
     }))
+      .catch(() => new Response(null, { status: 504, statusText: 'SW Network Timeout' }))
+  )
+})
+
+/* ---------------- Web Push（批次8 通知触达） ----------------
+ * 载荷由后端 RFC8291 加密：{ title, body, url, tag, type }。
+ * 系统级通知（App 关闭/后台也能收到）；点击聚焦已有窗口或新开落地页。
+ */
+self.addEventListener('push', (event) => {
+  let data = {}
+  try { data = event.data ? event.data.json() : {} } catch { data = { body: event.data ? event.data.text() : '' } }
+  const title = data.title || 'Vasc 社区'
+  const options = {
+    body: data.body || '',
+    icon: '/icons/app-icon-192.png',
+    badge: '/icons/favicon-32.png',
+    tag: data.tag || 'vasc-notify',
+    renotify: true,
+    data: { url: data.url || '/' }
+  }
+  event.waitUntil(self.registration.showNotification(title, options))
+})
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+  const target = (event.notification.data && event.notification.data.url) || '/'
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      // 已有同源窗口 → 聚焦并导航；否则新开
+      for (const client of clients) {
+        if ('focus' in client) {
+          client.focus()
+          if ('navigate' in client) client.navigate(target).catch(() => {})
+          return
+        }
+      }
+      return self.clients.openWindow(target)
+    })
   )
 })
