@@ -1,0 +1,1 @@
+import{f as a,g as o}from"./vue-C3BggPtO.js";function i(n){const e=t=>n(t&&t.detail||{});a(()=>window.addEventListener("tabbar:retap",e)),o(()=>window.removeEventListener("tabbar:retap",e))}export{i as u};
