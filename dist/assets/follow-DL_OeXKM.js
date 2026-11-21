@@ -1,0 +1,1 @@
+import{r as t}from"./index-UI88d_4Q.js";function a(o=""){return t({url:"/api/follow/authors",data:o?{keyword:o}:{}})}function e(o){return t({url:"/api/follow/feeds",data:{userId:o}})}function r(o){return t({url:"/api/follow/toggle",method:"POST",cache:!1,data:{userId:o}})}export{e as a,a as g,r as t};
